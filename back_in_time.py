@@ -42,20 +42,21 @@ if CAN_GPS == 'CAN':
   with open(inFile, 'r') as in_csv, open(outfile , 'w') as out_csv:
       reader = csv.reader(in_csv)
       writer = csv.writer(out_csv)
-      header = next(reader) #first line of the csv
-      writer.writerow(header)
-      for row in reader:
-        line=row
-        Time=line[0]
-        ts=float(Time)
-        TimefromFile=dt.datetime.fromtimestamp(ts) # creating a datetime object
-        if (TimefromFile > originalStartTime):
-          ts=ts-(3600*7) #subtract 7h
-          line[0]=ts
-        else:
-          pass
-          #do nothing
-        writer.writerow(line)
+      if (os.stat(inFile).st_size != 0):
+        header = next(reader) #first line of the csv
+        writer.writerow(header)
+        for row in reader:
+          line=row
+          Time=line[0]
+          ts=float(Time)
+          TimefromFile=dt.datetime.fromtimestamp(ts) # creating a datetime object
+          if (TimefromFile > originalStartTime):
+            ts=ts-(3600*7) #subtract 7h
+            line[0]=ts
+          else:
+            pass
+            #do nothing
+          writer.writerow(line)
 
 
 
